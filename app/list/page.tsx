@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
-export default function ListPage() {
+export default funtion ListPage () {
   const [items, setItems] = useState<any[]>([])
 
-   useEffect(() => {
-    fetchData()
+    useEffect(() => {
+        fetchData()
     }, [])
-
+     
     async function fetchData() {
         const { data, error } = await supabase
             .from('posts')
@@ -22,20 +22,18 @@ export default function ListPage() {
         setItems(data || [])
     }
 
-
     return (
         <div style={{ padding: '2rem' }}>
-            <h1>Supabase Data</h1>
-
+            <h1>Spabase Data</h1>
             {items.length === 0 && <p>No data found.</p>}
 
             <ul>
                 {items.map((item) => (
                     <li key={item.id}>
-                        <pre>{JSON.stringify(item, null, 2)}</pre>
+                        <prev>{JSON.stringify(items, null, 2)}</prev>
                     </li>
                 ))}
             </ul>
         </div>
     )
-}  
+}
