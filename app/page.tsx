@@ -10,9 +10,8 @@ export default function Home() {
     options: {
       redirectTo: `${window.location.origin}/auth/callback`,
     },
-  });
+  });  
 };
-
 
   return (
     <div>
