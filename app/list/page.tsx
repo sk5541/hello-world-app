@@ -30,7 +30,10 @@ export default function ListPage() {
     }
 
     async function handleVote(postId: number, voteValue: number) {
-        if(!user){
+        const { data } = await supabase.auth.getUser()
+        const currentUser = data.user
+        
+        if(!currentUser){
             alert('You must be logged in to vote')
             return
         }
@@ -52,6 +55,8 @@ export default function ListPage() {
         }
     }
 
+    <h1 style={{ color: "red" }}>THIS IS LIST PAGE</h1>
+
     return (
         <div style={{ padding: '2rem' }}>
             <h1>Supabase Data</h1>
@@ -63,7 +68,10 @@ export default function ListPage() {
                     <li key={item.id} style={{ marginBottom: '1.5rem' }}>
                         <pre>{JSON.stringify(item, null, 2)}</pre>
 
-                        <button onClick={() => handleVote(item.id, 1)}>
+                        <button 
+                            onClick={() => handleVote(item.id, 1)}
+                            style={{ marginRight: '10px' }}
+                        >
                             👍 Like
                         </button>
 
