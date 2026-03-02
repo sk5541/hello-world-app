@@ -1,15 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null)
   const [captions, setCaptions] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState<any>(null)
 
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [currentCaptionIndex, setCurrentCaptionIndex] = useState(0)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+    })
+  }, [])
 
   function nextCaption(){
     if(captions.length === 0) return
@@ -107,6 +114,14 @@ export default function UploadPage() {
     }
     setLoading(false)
   }
+
+  if(!user) {
+    return(
+      <div style={{ padding: "2rem" }}>
+        <h2>Log in to upload images.</h2>
+      </div>
+    )
+  }
   return (
     <div
       style={{
@@ -148,7 +163,7 @@ export default function UploadPage() {
     </button>
 
     {imagePreview && captions.length > 0 && (
-      <div style={{ position: "relative", maxWidth: "500px" }}>
+      <div style={{ position: "relative", maxWidth: "500px", marginBottom: "80px" }}>
         <img
           src={imagePreview}
           alt="preview"
@@ -161,7 +176,7 @@ export default function UploadPage() {
         <div
           style={{
             position: "absolute",
-            bottom: "15px",
+            bottom: "90px",
             left: "50%",
             transform: "translateX(-50%)",
             background: "rgba(0,0,0,0.7)",
@@ -176,10 +191,12 @@ export default function UploadPage() {
     
         <div
           style={{
+            position: "absolute",
+            bottom: "-55px",
+            left: "50%",
+            transform: "translateX(-50%)",
             display: "flex",
-            justifyContent: "center",
-            gap: "1rem",
-            marginTop: "1rem"
+            gap: "1rem"
           }}
         >
           <button
