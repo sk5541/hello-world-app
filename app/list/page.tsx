@@ -19,7 +19,7 @@ export default function ListPage() {
      
     async function fetchData() {
         const { data, error } = await supabase
-            .from('posts')
+            .from('captions')
             .select('*')
         if (error) {
             console.error('Supabase error:', error.message || error)
@@ -54,8 +54,7 @@ export default function ListPage() {
             alert('Vote submitted!')
         }
     }
-
-    <h1 style={{ color: "red" }}>THIS IS LIST PAGE</h1>
+    
 
     return (
         <div style={{ padding: '2rem' }}>
@@ -66,7 +65,8 @@ export default function ListPage() {
             <ul>
                 {items.map((item) => (
                     <li key={item.id} style={{ marginBottom: '1.5rem' }}>
-                        <pre>{JSON.stringify(item, null, 2)}</pre>
+                        <p><strong>{item.content}</strong></p>
+                        <p>Likes: {item.like_count}</p>
 
                         <button 
                             onClick={() => handleVote(item.id, 1)}
