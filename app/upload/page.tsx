@@ -8,6 +8,15 @@ export default function UploadPage() {
   const [captions, setCaptions] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
 
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [currentCaptionIndex, setCurrentCaptionIndex] = useState(0)
+
+  function nextCaption(){
+    if(captions.length === 0) return
+    setCurrentCaptionIndex((prev) => (prev + 1) % captions.length) 
+  }
+
+
   async function handleUpload() {
     if (!file) {
       alert("Please select an image")
@@ -99,27 +108,109 @@ export default function UploadPage() {
     setLoading(false)
   }
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Upload Image</h1>
-
+    <div
+      style={{
+        background: "#111",
+        color: "white",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "2rem"
+      }}
+    >
+      <h2 style={{ marginBottom: "1rem" }}>Upload Image</h2>
       <input
         type="file"
         accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/heic"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
+        onChange={(e) => {
+          const selected = e.target.files?.[0] || null
+        setFile(selected)
+        if (selected) setImagePreview(URL.createObjectURL(selected))
+      }}
+      style={{ marginBottom: "1rem" }}
+    />
 
-      <br /><br />
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? "Generating..." : "Generate Captions"}
-      </button>
+    <button
+      onClick={handleUpload}
+      disabled={loading}
+      style={{
+        background: "#4CAF50",
+        color: "white",
+        padding: "0.6rem 1.5rem",
+        border: "none",
+        borderRadius: "20px",
+        cursor: "pointer",
+        marginBottom: "2rem"
+      }}
+    >
+      {loading ? "Generating..." : "Generate Captions"}
+    </button>
 
-      <div style={{ marginTop: "2rem" }}>
-        {captions.map((cap: any, index: number) => (
-          <p key={index}>
-            {cap.content}
-          </p>
-        ))}
+    {imagePreview && captions.length > 0 && (
+      <div style={{ position: "relative", maxWidth: "500px" }}>
+        <img
+          src={imagePreview}
+          alt="preview"
+          style={{
+            width: "100%",
+            borderRadius: "10px"
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: "15px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "rgba(0,0,0,0.7)",
+            padding: "0.8rem 1rem",
+            borderRadius: "8px",
+            textAlign: "center",
+            maxWidth: "90%"
+          }}
+        >
+          {captions[currentCaptionIndex]?.content}
+        </div>
+    
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "1rem",
+            marginTop: "1rem"
+          }}
+        >
+          <button
+            onClick={nextCaption}
+            style={{
+              background: "#333",
+              color: "white",
+              border: "none",
+              padding: "0.5rem 1rem",
+              borderRadius: "20px",
+              cursor: "pointer",
+            }}
+          >
+            👎
+          </button> 
+
+          <button
+            onClick={nextCaption}
+            style={{
+              background: "#FFD400",
+              border: "none",
+              padding: "0.5rem 1rem",
+              borderRadius: "20px",
+              cursor: "pointer",
+            }}
+          >
+            👍
+          </button>
+        </div>
       </div>
-    </div>
-  )
+    )}
+  </div>
+)
 }
