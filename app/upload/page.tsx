@@ -175,15 +175,12 @@ export default function UploadPage() {
 
         <div
           style={{
-            position: "absolute",
-            bottom: "90px",
-            left: "50%",
-            transform: "translateX(-50%)",
             background: "rgba(0,0,0,0.7)",
             padding: "0.8rem 1rem",
             borderRadius: "8px",
             textAlign: "center",
-            maxWidth: "90%"
+            maxWidth: "500px",
+            marginTop: "1rem"
           }}
         >
           {captions[currentCaptionIndex]?.content}
@@ -191,12 +188,10 @@ export default function UploadPage() {
     
         <div
           style={{
-            position: "absolute",
-            bottom: "-55px",
-            left: "50%",
-            transform: "translateX(-50%)",
             display: "flex",
-            gap: "1rem"
+            justifyContent: "center",
+            gap: "1rem",
+            marginTop: "1rem"
           }}
         >
           <button
